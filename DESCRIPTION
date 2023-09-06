@@ -1,34 +1,32 @@
-Package: RNAFracQuant
+Package: SedSeqQuant
 Version: 0.1
-Date: 2020-07-07
-Title: RNA in Fractions Quantification
-Description: This is a demo package for predicting the quantification of RNA in different fractions.
-Author: Edward Wallace <edward.wallace@ed.ac.uk>; Xuejia Ke <s1924580@ed.ac.uk>
-Maintainer: Edward Wallace <edward.wallace@ed.ac.uk>; Xuejia Ke <s1924580@ed.ac.uk>
-RoxygenNote: 7.1.1
+Date: 2023-09-05
+Title: Calculate RNA pSups from Sedimentation Experiments
+Description: Quantify proportion of RNA in supernatant from sedimentatation experiments.
+Authors@R: c(
+    person(given = "Edward", family = "Wallace", email = "edward.wallace@ed.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8025-6361")),
+    person(given = "Xuejia", family = "Ke", email = "s1924580@ed.ac.uk", role = c("aut")),
+    person(given = "Jared", family = "Bard", email = "jbard@uchicago.edu", role = c("aut"), comment = c(ORCID = "0000-0001-8357-9721"))
+    )
+License: Apache License (>= 2)
 Encoding: UTF-8
-License: Apache License 2.0
-Depends:
-    R (>= 3.5.0),
-    dplyr
-Imports:
-    here,
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Biarch: true
+Depends: 
+    R (>= 3.4.0)
+Imports: 
     methods,
-    plyr,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
-    readr,
     rstan (>= 2.18.1),
-    rstantools (>= 2.1.1),
-    tidybayes,
+    rstantools (>= 2.3.1.1),
+    dplyr,
+    readr,
+    magrittr,
+    purrr,
+    tibble,
     tidyr
-LazyData: true
-Suggests: 
-    testthat,
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
-Biarch: true
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),

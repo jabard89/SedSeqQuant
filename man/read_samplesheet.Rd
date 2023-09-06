@@ -4,11 +4,9 @@
 \alias{read_samplesheet}
 \title{Read Samplesheet}
 \usage{
-read_samplesheet(dir_in, file)
+read_samplesheet(file)
 }
 \arguments{
-\item{dir_in}{The input directory name}
-
 \item{file}{The input Samplesheet file name}
 }
 \value{
@@ -19,15 +17,7 @@ Read the Samplesheet file that is provided by users.
 }
 \details{
 This function is to read the samplesheet file that is provided by users.
-Useres need to make sure that the input directory is under the working directory 
-and the samplesheet file is in the input directory.
-}
-\examples{
- 
-\dontrun{
-read_samplesheet("inst/extdata","Samplesheet")
-read_samplesheet(dir_in = "inst/extdata",file = "Samplesheet")
-}
-samplesheet_example
+Spreadsheet has 4 columns with headers: Sample_ID, Condition, Rep, Fraction.
+Sample_IDs need to be unique, Fractions should be Total, Supernatant, or Pellet.
 }
 \keyword{samplesheet}

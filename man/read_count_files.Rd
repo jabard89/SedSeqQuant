@@ -4,25 +4,16 @@
 \alias{read_count_files}
 \title{Read count files}
 \usage{
-read_count_files(dir_in, file)
+read_count_files(file)
 }
 \arguments{
-\item{dir_in}{The input directory name}
-
-\item{file}{The input Samplesheet file name}
+\item{file}{The input count file}
 }
 \description{
-Read all the count file that are provided by users.
+Read a matrix of counts for each sample
 }
 \details{
-This function is to read the samplesheet file that is provided by users
-and then use it to read all the count files. Useres need to make sure that the 
-samplesheet file and all the count files are within the same input directory.
-}
-\examples{
-\dontrun{
-read_count_files("inst/extdata","Samplesheet")
-read_count_files(dir_in = "inst/extdata",file = "Samplesheet")
-}
+This function is to read a count matrix containing a column of transcript_IDs
+then a column of counts for every Sample_ID.
 }
 \keyword{counts}

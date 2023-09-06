@@ -6,15 +6,22 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
 
-RcppExport SEXP _rcpp_module_boot_stan_fit4RNAFracQuant_mod();
+
+RcppExport SEXP _rcpp_module_boot_stan_fit4SedSeqQuantNoReps_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4SedSeqQuantReps_mod();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcpp_module_boot_stan_fit4RNAFracQuant_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4RNAFracQuant_mod, 0},
+    {"_rcpp_module_boot_stan_fit4SedSeqQuantNoReps_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4SedSeqQuantNoReps_mod, 0},
+    {"_rcpp_module_boot_stan_fit4SedSeqQuantReps_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4SedSeqQuantReps_mod, 0},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_RNAFracQuant(DllInfo *dll) {
+RcppExport void R_init_SedSeqQuant(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

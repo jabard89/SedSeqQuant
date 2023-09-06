@@ -6,6 +6,7 @@
 \usage{
 calculate_pSup(
   wide_data,
+  mixing_params,
   chains = 4,
   iter = 1000,
   control = list(adapt_delta = 0.85)
@@ -13,6 +14,8 @@ calculate_pSup(
 }
 \arguments{
 \item{wide_data}{A wider data frame}
+
+\item{mixing_params}{output of get_mixing_params}
 
 \item{chains}{A number, default to 4}
 
@@ -28,15 +31,8 @@ The input data should be the wide format in terms of fractions.
 Function get_paras_median from this package is called in this function. Output
 a data frame that includes a variable pSup calculated for each transcript.
 }
-\examples{
- 
-\dontrun{
-calculate_pSup(wide_data)
-calculate_pSup(wide_data = mydata)
-}
-}
 \seealso{
-[rstan::sampling()], `browseVignettes("rstan")`
+\code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}, \code{browseVignettes("rstan")}
 }
 \keyword{pSup}
 \keyword{pellet}
