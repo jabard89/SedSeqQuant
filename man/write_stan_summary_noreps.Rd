@@ -7,7 +7,7 @@
 write_stan_summary_noreps(stan_summary, output_dir)
 }
 \arguments{
-\item{stan_summary}{output of get_stan_summary}
+\item{stan_summary}{output of get_stan_summary_noreps}
 
 \item{output_dir}{folder to write summaries in}
 }
@@ -15,8 +15,8 @@ write_stan_summary_noreps(stan_summary, output_dir)
 Write the results of get_stan_summary to files
 }
 \details{
-The input data is the output of the rstan::sampling function
-Output a data frame that includes a statistical result of parameters.
+The input data is the output of the get_stan_summary_noreps
+Writes a data frame that includes a statistical result of parameters.
 }
 \keyword{summary}
 \keyword{write}

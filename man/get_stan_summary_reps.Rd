@@ -7,9 +7,9 @@
 get_stan_summary_reps(nested_stanfit, nested_data)
 }
 \arguments{
-\item{nested_stanfit}{output of rstan::sampling}
+\item{nested_stanfit}{output of model_fit_reps}
 
-\item{nested_data}{input data into rstan::sampling}
+\item{nested_data}{input data into model_fit_reps}
 }
 \value{
 A data frame
@@ -19,7 +19,7 @@ Get the estimated statistical results of parameters from a stan model
 Extracts the names of transcript_IDs from the input data
 }
 \details{
-The input data is the output of the rstan::sampling function
+The input data is the output of model_fit_reps
 Output a data frame that includes a statistical result of parameters.
 }
 \keyword{extraction}

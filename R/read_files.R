@@ -34,7 +34,7 @@ read_samplesheet <- function(file)
 #'
 #' Read a matrix of counts for each sample
 #' @details This function is to read a count matrix containing a column of transcript_IDs
-#' then a column of counts for every Sample_ID.
+#' then a column of counts for every Sample_ID. It is highly recommended to first filter this for verified ORFs.
 #' @param file The input count file
 #' @keywords counts
 #' @importFrom readr read_tsv

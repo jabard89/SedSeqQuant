@@ -7,16 +7,16 @@
 write_stan_summary_with_reps(stan_summary, output_dir)
 }
 \arguments{
-\item{stan_summary}{output of get_stan_summary}
+\item{stan_summary}{output of get_stan_summary_reps}
 
 \item{output_dir}{folder to write summaries in}
 }
 \description{
-Write the results of get_stan_summary to files
+Write the results of get_stan_summary_reps to files
 }
 \details{
-The input data is the output of the rstan::sampling function
-Output a data frame that includes a statistical result of parameters.
+The input data is the output of the model_fit_reps function
+Writes a data frame that includes a statistical result of parameters.
 }
 \keyword{summary}
 \keyword{write}

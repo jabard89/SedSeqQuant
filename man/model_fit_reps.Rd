@@ -22,7 +22,7 @@ A dataframe with a column containing the class \code{stanfit} returned by \code{
 Fit the bayesian statistical model to the counts data.
 }
 \details{
-The input data should be the wide format in terms of fractions.
+The input data should be from prepare_data_with_reps
 }
 \seealso{
 \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}, \code{browseVignettes("rstan")}

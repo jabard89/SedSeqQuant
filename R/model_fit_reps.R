@@ -72,8 +72,7 @@ prepare_data_with_reps <- function(count_data,min_counts=20){
 #' Model fit
 #'
 #' Fit the bayesian statistical model to the counts data.
-#' @details The input data should be the wide format in terms of fractions.
-#'
+#' @details The input data should be from prepare_data_with_reps
 #' @param nested_data output of prepare_data_with_reps
 #' @param chains A number, defaulting to 4
 #' @param iter A number, defaulting to 1000
@@ -100,10 +99,10 @@ model_fit_reps <- function(nested_data, chains = 4,
 #'
 #' Get the estimated statistical results of parameters from a stan model
 #' Extracts the names of transcript_IDs from the input data
-#' @details The input data is the output of the rstan::sampling function
+#' @details The input data is the output of model_fit_reps
 #' Output a data frame that includes a statistical result of parameters.
-#' @param nested_stanfit output of rstan::sampling
-#' @param nested_data input data into rstan::sampling
+#' @param nested_stanfit output of model_fit_reps
+#' @param nested_data input data into model_fit_reps
 #' @return A data frame
 #' @keywords parameter extraction
 #' @import dplyr
@@ -133,9 +132,11 @@ get_stan_summary_reps <- function(nested_stanfit,nested_data)
         pivot_longer(cols=c(mean:Rhat),names_to="Term",values_to="Value")%>%
         mutate(
           Fraction = str_extract(Variable, "^[^\\[]+"),
-          Rep = as.integer(str_extract(Variable, "\\d+"))
+          RepIndex = as.integer(str_extract(Variable, "\\d+")) # Get the index
         ) %>%
-        select(-Variable)
+        rowwise() %>%
+        mutate(Rep = colnames(pd$tot_obs_counts)[RepIndex]) %>% # Convert index to Rep character representation
+        select(-RepIndex, -Variable)
       long_params_counts <- params_summary %>%
         filter(grepl("latent_counts",Variable)) %>%
         mutate(
@@ -173,10 +174,10 @@ get_stan_summary_reps <- function(nested_stanfit,nested_data)
 
 #' write statistical summary of fit
 #'
-#' Write the results of get_stan_summary to files
-#' @details The input data is the output of the rstan::sampling function
-#' Output a data frame that includes a statistical result of parameters.
-#' @param stan_summary output of get_stan_summary
+#' Write the results of get_stan_summary_reps to files
+#' @details The input data is the output of the model_fit_reps function
+#' Writes a data frame that includes a statistical result of parameters.
+#' @param stan_summary output of get_stan_summary_reps
 #' @param output_dir folder to write summaries in
 #' @return NULL
 #' @keywords write summary

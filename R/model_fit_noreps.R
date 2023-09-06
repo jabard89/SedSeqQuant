@@ -75,8 +75,7 @@ prepare_data_noreps <- function(count_data,min_counts=20){
 #' Model fit
 #'
 #' Fit the bayesian statistical model to the counts data.
-#' @details The input data should be the wide format in terms of fractions.
-#'
+#' @details The input data should be from prepare_data_noreps.
 #' @param nested_data output of prepare_data_with_noreps
 #' @param chains A number, defaulting to 4
 #' @param iter A number, defaulting to 1000
@@ -150,9 +149,9 @@ get_stan_summary_noreps <- function(nested_stanfit,nested_data)
 #' write statistical summary of fit
 #'
 #' Write the results of get_stan_summary to files
-#' @details The input data is the output of the rstan::sampling function
-#' Output a data frame that includes a statistical result of parameters.
-#' @param stan_summary output of get_stan_summary
+#' @details The input data is the output of the get_stan_summary_noreps
+#' Writes a data frame that includes a statistical result of parameters.
+#' @param stan_summary output of get_stan_summary_noreps
 #' @param output_dir folder to write summaries in
 #' @return NULL
 #' @keywords write summary
