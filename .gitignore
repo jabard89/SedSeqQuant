@@ -1,2 +1,6 @@
 Results/
 .Rproj.user
+.Rhistory
+
+.DS_store
+~/.DS_store
