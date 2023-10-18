@@ -57,9 +57,33 @@ prepare_data_with_reps <- function(count_data,min_counts=20){
         map(~.x%>%pivot_wider(names_from=Rep,values_from=Count) %>%
               column_to_rownames(var="transcript_ID") %>%
               select(-Fraction) %>% as.matrix(.))
+
+      # Compute mean and sd of log-transformed tot_obs_counts
+      mean_log_tot_obs <- apply(log1p(nested_data$Total), 1, mean)
+      sd_log_tot_obs <- apply(log1p(nested_data$Total), 1, sd)
+
+      # get guesses for mixing ratios
+      mixing_guess <- df %>%
+        group_by(transcript_ID) %>%
+        mutate(Total.mean = exp(mean(log1p(Count[Fraction=="Total"])))) %>%
+        ungroup %>%
+        mutate(mixing_factor_guess = if_else(Fraction=="Total",Count/Total.mean,
+                                             Count/(Total.mean*0.5))) %>% # guess that the pSup is 0.5
+        group_by(Fraction) %>%
+        summarise(mean = mean(mixing_factor_guess),
+                  sd = sd(mixing_factor_guess))
+
       prepared_data <- list(
         "NREP"=dim(nested_data$Total)[2],
         "NRNA"=dim(nested_data$Total)[1],
+        "mean_log_tot_obs" = mean_log_tot_obs,
+        "sd_log_tot_obs" = sd_log_tot_obs,
+        "mixing_factor_total_guess_mean" = mixing_guess %>% filter(Fraction=="Total") %>% pull(mean),
+        "mixing_factor_total_guess_sd" = mixing_guess %>% filter(Fraction=="Total") %>% pull(sd),
+        "mixing_factor_sup_guess_mean" = mixing_guess %>% filter(Fraction=="Supernatant") %>% pull(mean),
+        "mixing_factor_sup_guess_sd" = mixing_guess %>% filter(Fraction=="Supernatant") %>% pull(sd),
+        "mixing_factor_pellet_guess_mean" = mixing_guess %>% filter(Fraction=="Pellet") %>% pull(mean),
+        "mixing_factor_pellet_guess_sd" = mixing_guess %>% filter(Fraction=="Pellet") %>% pull(sd),
         tot_obs_counts=nested_data$Total,
         sup_obs_counts=nested_data$Supernatant,
         pel_obs_counts=nested_data$Pellet
@@ -69,7 +93,7 @@ prepare_data_with_reps <- function(count_data,min_counts=20){
   return(nested_data %>% select(Condition,prepared_data))
 }
 
-#' Model fit
+#' Model fit modified
 #'
 #' Fit the bayesian statistical model to the counts data.
 #' @details The input data should be from prepare_data_with_reps
@@ -95,6 +119,7 @@ model_fit_reps <- function(nested_data, chains = 4,
     select(Condition,stanfit)
   return(nested_stanfit)
 }
+
 #' parameters statistical results
 #'
 #' Get the estimated statistical results of parameters from a stan model
@@ -127,8 +152,7 @@ get_stan_summary_reps <- function(nested_stanfit,nested_data)
                                Rhat = item$summary[,"Rhat"])
       # extract the scaling parameter for total (relative to Rep=1)
       long_params_mixing <- params_summary %>%
-        filter(grepl("scaling_factor_total\\[", Variable) |
-                 grepl("mixing_factor_",Variable)) %>%
+        filter(grepl("mixing_factor_",Variable)) %>%
         pivot_longer(cols=c(mean:Rhat),names_to="Term",values_to="Value")%>%
         mutate(
           Fraction = str_extract(Variable, "^[^\\[]+"),
@@ -144,27 +168,34 @@ get_stan_summary_reps <- function(nested_stanfit,nested_data)
           index = as.integer(str_extract(Variable, "\\d+"))
         ) %>%
         select(-Variable) %>%
-        mutate(Fraction=if_else(Fraction=="sup_latent_counts","Supernatant","Pellet")) %>%
         left_join(transcript_tibble,by="index") %>%
         pivot_longer(cols=c(mean:Rhat),names_to="Term",values_to="Value") %>%
         select(-index)
       long_params_pSups <- params_summary %>%
-        filter(grepl("pSup",Variable)) %>%
+        filter(grepl("^pSup",Variable)) %>%
         mutate(index = as.integer(str_extract(Variable, "\\d+")),
                Variable="pSup") %>%
         left_join(transcript_tibble,by="index") %>%
         pivot_longer(cols=c(mean:Rhat),names_to="Term",values_to="Value") %>%
         select(-index)
+      long_params_lopSups <- params_summary %>%
+        filter(grepl("^lopSup",Variable)) %>%
+        mutate(index = as.integer(str_extract(Variable, "\\d+")),
+               Variable="lopSup") %>%
+        left_join(transcript_tibble,by="index") %>%
+        pivot_longer(cols=c(mean:Rhat),names_to="Term",values_to="Value") %>%
+        select(-index)
       long_params_other <- params_summary %>%
-        filter(!grepl("scaling_factor_total\\[", Variable) &
-                 !grepl("mixing_factor_",Variable) &
+        filter(!grepl("mixing_factor_",Variable) &
                  !grepl("latent_counts",Variable) &
-                 !grepl("pSup",Variable))
+                 !grepl("pSup",Variable) &
+                 !grepl("lopSup",Variable))
       stan_summary <- tibble(
         count_params = list(long_params_counts),
         mixing_params = list(long_params_mixing),
         other_params = list(long_params_other),
-        pSup_est = list(long_params_pSups)
+        pSup_est = list(long_params_pSups),
+        lopSup_est = list(long_params_lopSups)
       )
       return(stan_summary)
     })) %>%
@@ -198,4 +229,7 @@ write_stan_summary_with_reps <- function(stan_summary,output_dir)
   write_tsv(stan_summary %>% select(Condition,pSup_est) %>%
               unnest(pSup_est),
             file.path(output_dir,"pSup_est.tsv"))
+  write_tsv(stan_summary %>% select(Condition,lopSup_est) %>%
+              unnest(lopSup_est),
+            file.path(output_dir,"lopSup_est.tsv"))
 }

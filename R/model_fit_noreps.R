@@ -60,12 +60,25 @@ prepare_data_noreps <- function(count_data,min_counts=20){
           names(counts) <- x$transcript_ID
           return(counts)
         })
+      #estimate the mixing factor assuming that the pSup of each transcript is 0.5
+      mixing_guess <- df %>%
+        group_by(transcript_ID) %>%
+        mutate(Total = Count[Fraction=="Total"]) %>%
+        ungroup %>%
+        filter(Fraction != "Total") %>%
+        mutate(mixing_factor_guess = Count/(Total*0.5)) %>%
+        group_by(Fraction) %>%
+        summarise(mean = mean(mixing_factor_guess),
+                  sd = sd(mixing_factor_guess))
       prepared_data <- list(
         "NRNA"=length(nested_data$Total),
-
-        tot_obs_counts=nested_data$Total,
-        sup_obs_counts=nested_data$Supernatant,
-        pel_obs_counts=nested_data$Pellet
+        "mixing_factor_sup_guess_mean" = mixing_guess %>% filter(Fraction=="Supernatant") %>% pull(mean),
+        "mixing_factor_sup_guess_sd" = mixing_guess %>% filter(Fraction=="Supernatant") %>% pull(sd),
+        "mixing_factor_pellet_guess_mean" = mixing_guess %>% filter(Fraction=="Pellet") %>% pull(mean),
+        "mixing_factor_pellet_guess_sd" = mixing_guess %>% filter(Fraction=="Pellet") %>% pull(sd),
+        "tot_obs_counts"=nested_data$Total,
+        "sup_obs_counts"=nested_data$Supernatant,
+        "pel_obs_counts"=nested_data$Pellet
       )
       return(prepared_data)
     }))
@@ -139,8 +152,8 @@ get_stan_summary_noreps <- function(nested_stanfit,nested_data)
                                      Variable=="mixing_factor_sup") %>% pull(Value)
       mix_pel <- ss %>% filter(Term=="mean",
                                      Variable=="mixing_factor_pellet") %>% pull(Value)
-      est <- mix_sup*pd$sup_obs_counts/(mix_sup*pd$sup_obs_counts+
-                                               mix_pel*pd$pel_obs_counts)
+      est <- (pd$sup_obs_counts/mix_sup)/(pd$sup_obs_counts/mix_sup+
+                                               pd$pel_obs_counts/mix_pel)
       return(tibble(transcript_ID=names(pd$tot_obs_counts),pSup_est=est))
     })) %>%
     select(Condition,Rep,stan_summary,pSup_est)

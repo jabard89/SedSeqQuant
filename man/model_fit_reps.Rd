@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_fit_reps.R
 \name{model_fit_reps}
 \alias{model_fit_reps}
-\title{Model fit}
+\title{Model fit modified}
 \usage{
 model_fit_reps(nested_data, chains = 4, iter = 1000, ...)
 }

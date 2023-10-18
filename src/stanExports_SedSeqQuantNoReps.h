@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_SedSeqQuantNoReps");
-    reader.add_event(35, 33, "end", "model_SedSeqQuantNoReps");
+    reader.add_event(41, 39, "end", "model_SedSeqQuantNoReps");
     return reader;
 }
 #include <stan_meta_header.hpp>
@@ -44,6 +44,10 @@ private:
         std::vector<int> tot_obs_counts;
         std::vector<int> sup_obs_counts;
         std::vector<int> pel_obs_counts;
+        double mixing_factor_sup_guess_mean;
+        double mixing_factor_sup_guess_sd;
+        double mixing_factor_pellet_guess_mean;
+        double mixing_factor_pellet_guess_sd;
 public:
     model_SedSeqQuantNoReps(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
@@ -123,17 +127,41 @@ public:
             for (size_t i_0__ = 0; i_0__ < pel_obs_counts_i_0_max__; ++i_0__) {
                 check_greater_or_equal(function__, "pel_obs_counts[i_0__]", pel_obs_counts[i_0__], 0);
             }
+            current_statement_begin__ = 12;
+            context__.validate_dims("data initialization", "mixing_factor_sup_guess_mean", "double", context__.to_vec());
+            mixing_factor_sup_guess_mean = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_sup_guess_mean");
+            pos__ = 0;
+            mixing_factor_sup_guess_mean = vals_r__[pos__++];
+            current_statement_begin__ = 13;
+            context__.validate_dims("data initialization", "mixing_factor_sup_guess_sd", "double", context__.to_vec());
+            mixing_factor_sup_guess_sd = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_sup_guess_sd");
+            pos__ = 0;
+            mixing_factor_sup_guess_sd = vals_r__[pos__++];
+            current_statement_begin__ = 14;
+            context__.validate_dims("data initialization", "mixing_factor_pellet_guess_mean", "double", context__.to_vec());
+            mixing_factor_pellet_guess_mean = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_pellet_guess_mean");
+            pos__ = 0;
+            mixing_factor_pellet_guess_mean = vals_r__[pos__++];
+            current_statement_begin__ = 15;
+            context__.validate_dims("data initialization", "mixing_factor_pellet_guess_sd", "double", context__.to_vec());
+            mixing_factor_pellet_guess_sd = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_pellet_guess_sd");
+            pos__ = 0;
+            mixing_factor_pellet_guess_sd = vals_r__[pos__++];
             // initialize transformed data variables
             // execute transformed data statements
             // validate transformed data
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 14;
+            current_statement_begin__ = 20;
             num_params_r__ += 1;
-            current_statement_begin__ = 15;
+            current_statement_begin__ = 21;
             num_params_r__ += 1;
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 24;
             num_params_r__ += 1;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -152,7 +180,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 14;
+        current_statement_begin__ = 20;
         if (!(context__.contains_r("mixing_factor_sup")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable mixing_factor_sup missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("mixing_factor_sup");
@@ -165,7 +193,7 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable mixing_factor_sup: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 15;
+        current_statement_begin__ = 21;
         if (!(context__.contains_r("mixing_factor_pellet")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable mixing_factor_pellet missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("mixing_factor_pellet");
@@ -178,7 +206,7 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable mixing_factor_pellet: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 18;
+        current_statement_begin__ = 24;
         if (!(context__.contains_r("phi")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable phi missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("phi");
@@ -216,21 +244,21 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 14;
+            current_statement_begin__ = 20;
             local_scalar_t__ mixing_factor_sup;
             (void) mixing_factor_sup;  // dummy to suppress unused var warning
             if (jacobian__)
                 mixing_factor_sup = in__.scalar_lb_constrain(0, lp__);
             else
                 mixing_factor_sup = in__.scalar_lb_constrain(0);
-            current_statement_begin__ = 15;
+            current_statement_begin__ = 21;
             local_scalar_t__ mixing_factor_pellet;
             (void) mixing_factor_pellet;  // dummy to suppress unused var warning
             if (jacobian__)
                 mixing_factor_pellet = in__.scalar_lb_constrain(0, lp__);
             else
                 mixing_factor_pellet = in__.scalar_lb_constrain(0);
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 24;
             local_scalar_t__ phi;
             (void) phi;  // dummy to suppress unused var warning
             if (jacobian__)
@@ -238,16 +266,16 @@ public:
             else
                 phi = in__.scalar_lb_constrain(0);
             // model body
-            current_statement_begin__ = 22;
-            lp_accum__.add(gamma_log<propto__>(mixing_factor_sup, 1, 1));
-            current_statement_begin__ = 23;
-            lp_accum__.add(gamma_log<propto__>(mixing_factor_pellet, 1, 1));
-            current_statement_begin__ = 25;
+            current_statement_begin__ = 28;
+            lp_accum__.add(normal_log<propto__>(mixing_factor_sup, mixing_factor_sup_guess_mean, mixing_factor_sup_guess_sd));
+            current_statement_begin__ = 29;
+            lp_accum__.add(normal_log<propto__>(mixing_factor_pellet, mixing_factor_pellet_guess_mean, mixing_factor_pellet_guess_sd));
+            current_statement_begin__ = 32;
             lp_accum__.add(cauchy_log<propto__>(phi, 0, 3));
-            current_statement_begin__ = 27;
+            current_statement_begin__ = 34;
             for (int idx = 1; idx <= NRNA; ++idx) {
-                current_statement_begin__ = 30;
-                lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(tot_obs_counts, idx, "tot_obs_counts", 1), ((mixing_factor_sup * get_base1(sup_obs_counts, idx, "sup_obs_counts", 1)) + (mixing_factor_pellet * get_base1(pel_obs_counts, idx, "pel_obs_counts", 1))), phi));
+                current_statement_begin__ = 36;
+                lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(tot_obs_counts, idx, "tot_obs_counts", 1), ((get_base1(sup_obs_counts, idx, "sup_obs_counts", 1) / mixing_factor_sup) + (get_base1(pel_obs_counts, idx, "pel_obs_counts", 1) / mixing_factor_pellet)), phi));
             }
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());

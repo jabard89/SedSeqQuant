@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_SedSeqQuantReps");
-    reader.add_event(70, 68, "end", "model_SedSeqQuantReps");
+    reader.add_event(78, 76, "end", "model_SedSeqQuantReps");
     return reader;
 }
 #include <stan_meta_header.hpp>
@@ -45,6 +45,14 @@ private:
         std::vector<std::vector<int> > tot_obs_counts;
         std::vector<std::vector<int> > sup_obs_counts;
         std::vector<std::vector<int> > pel_obs_counts;
+        std::vector<double> mean_log_tot_obs;
+        std::vector<double> sd_log_tot_obs;
+        double mixing_factor_total_guess_mean;
+        double mixing_factor_total_guess_sd;
+        double mixing_factor_sup_guess_mean;
+        double mixing_factor_sup_guess_sd;
+        double mixing_factor_pellet_guess_mean;
+        double mixing_factor_pellet_guess_sd;
 public:
     model_SedSeqQuantReps(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
@@ -152,29 +160,85 @@ public:
                     check_greater_or_equal(function__, "pel_obs_counts[i_0__][i_1__]", pel_obs_counts[i_0__][i_1__], 0);
                 }
             }
+            current_statement_begin__ = 14;
+            validate_non_negative_index("mean_log_tot_obs", "NRNA", NRNA);
+            context__.validate_dims("data initialization", "mean_log_tot_obs", "double", context__.to_vec(NRNA));
+            mean_log_tot_obs = std::vector<double>(NRNA, double(0));
+            vals_r__ = context__.vals_r("mean_log_tot_obs");
+            pos__ = 0;
+            size_t mean_log_tot_obs_k_0_max__ = NRNA;
+            for (size_t k_0__ = 0; k_0__ < mean_log_tot_obs_k_0_max__; ++k_0__) {
+                mean_log_tot_obs[k_0__] = vals_r__[pos__++];
+            }
+            current_statement_begin__ = 15;
+            validate_non_negative_index("sd_log_tot_obs", "NRNA", NRNA);
+            context__.validate_dims("data initialization", "sd_log_tot_obs", "double", context__.to_vec(NRNA));
+            sd_log_tot_obs = std::vector<double>(NRNA, double(0));
+            vals_r__ = context__.vals_r("sd_log_tot_obs");
+            pos__ = 0;
+            size_t sd_log_tot_obs_k_0_max__ = NRNA;
+            for (size_t k_0__ = 0; k_0__ < sd_log_tot_obs_k_0_max__; ++k_0__) {
+                sd_log_tot_obs[k_0__] = vals_r__[pos__++];
+            }
+            current_statement_begin__ = 19;
+            context__.validate_dims("data initialization", "mixing_factor_total_guess_mean", "double", context__.to_vec());
+            mixing_factor_total_guess_mean = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_total_guess_mean");
+            pos__ = 0;
+            mixing_factor_total_guess_mean = vals_r__[pos__++];
+            current_statement_begin__ = 20;
+            context__.validate_dims("data initialization", "mixing_factor_total_guess_sd", "double", context__.to_vec());
+            mixing_factor_total_guess_sd = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_total_guess_sd");
+            pos__ = 0;
+            mixing_factor_total_guess_sd = vals_r__[pos__++];
+            current_statement_begin__ = 21;
+            context__.validate_dims("data initialization", "mixing_factor_sup_guess_mean", "double", context__.to_vec());
+            mixing_factor_sup_guess_mean = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_sup_guess_mean");
+            pos__ = 0;
+            mixing_factor_sup_guess_mean = vals_r__[pos__++];
+            current_statement_begin__ = 22;
+            context__.validate_dims("data initialization", "mixing_factor_sup_guess_sd", "double", context__.to_vec());
+            mixing_factor_sup_guess_sd = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_sup_guess_sd");
+            pos__ = 0;
+            mixing_factor_sup_guess_sd = vals_r__[pos__++];
+            current_statement_begin__ = 23;
+            context__.validate_dims("data initialization", "mixing_factor_pellet_guess_mean", "double", context__.to_vec());
+            mixing_factor_pellet_guess_mean = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_pellet_guess_mean");
+            pos__ = 0;
+            mixing_factor_pellet_guess_mean = vals_r__[pos__++];
+            current_statement_begin__ = 24;
+            context__.validate_dims("data initialization", "mixing_factor_pellet_guess_sd", "double", context__.to_vec());
+            mixing_factor_pellet_guess_sd = double(0);
+            vals_r__ = context__.vals_r("mixing_factor_pellet_guess_sd");
+            pos__ = 0;
+            mixing_factor_pellet_guess_sd = vals_r__[pos__++];
             // initialize transformed data variables
             // execute transformed data statements
             // validate transformed data
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 18;
-            validate_non_negative_index("scaling_factor_total_raw", "(logical_gt(NREP, 1) ? (NREP - 1) : 0 )", (logical_gt(NREP, 1) ? (NREP - 1) : 0 ));
-            num_params_r__ += (1 * (logical_gt(NREP, 1) ? (NREP - 1) : 0 ));
-            current_statement_begin__ = 19;
+            current_statement_begin__ = 29;
+            validate_non_negative_index("mixing_factor_total", "NREP", NREP);
+            num_params_r__ += (1 * NREP);
+            current_statement_begin__ = 30;
             validate_non_negative_index("mixing_factor_sup", "NREP", NREP);
             num_params_r__ += (1 * NREP);
-            current_statement_begin__ = 20;
+            current_statement_begin__ = 31;
             validate_non_negative_index("mixing_factor_pellet", "NREP", NREP);
             num_params_r__ += (1 * NREP);
-            current_statement_begin__ = 24;
+            current_statement_begin__ = 35;
             validate_non_negative_index("phi", "3", 3);
             num_params_r__ += (1 * 3);
-            current_statement_begin__ = 27;
-            validate_non_negative_index("sup_latent_counts", "NRNA", NRNA);
+            current_statement_begin__ = 38;
+            validate_non_negative_index("tot_latent_counts", "NRNA", NRNA);
             num_params_r__ += (1 * NRNA);
-            current_statement_begin__ = 28;
-            validate_non_negative_index("pel_latent_counts", "NRNA", NRNA);
+            current_statement_begin__ = 41;
+            validate_non_negative_index("lopSup", "NRNA", NRNA);
             num_params_r__ += (1 * NRNA);
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -193,27 +257,27 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 18;
-        if (!(context__.contains_r("scaling_factor_total_raw")))
-            stan::lang::rethrow_located(std::runtime_error(std::string("Variable scaling_factor_total_raw missing")), current_statement_begin__, prog_reader__());
-        vals_r__ = context__.vals_r("scaling_factor_total_raw");
+        current_statement_begin__ = 29;
+        if (!(context__.contains_r("mixing_factor_total")))
+            stan::lang::rethrow_located(std::runtime_error(std::string("Variable mixing_factor_total missing")), current_statement_begin__, prog_reader__());
+        vals_r__ = context__.vals_r("mixing_factor_total");
         pos__ = 0U;
-        validate_non_negative_index("scaling_factor_total_raw", "(logical_gt(NREP, 1) ? (NREP - 1) : 0 )", (logical_gt(NREP, 1) ? (NREP - 1) : 0 ));
-        context__.validate_dims("parameter initialization", "scaling_factor_total_raw", "double", context__.to_vec((logical_gt(NREP, 1) ? (NREP - 1) : 0 )));
-        std::vector<double> scaling_factor_total_raw((logical_gt(NREP, 1) ? (NREP - 1) : 0 ), double(0));
-        size_t scaling_factor_total_raw_k_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-        for (size_t k_0__ = 0; k_0__ < scaling_factor_total_raw_k_0_max__; ++k_0__) {
-            scaling_factor_total_raw[k_0__] = vals_r__[pos__++];
+        validate_non_negative_index("mixing_factor_total", "NREP", NREP);
+        context__.validate_dims("parameter initialization", "mixing_factor_total", "double", context__.to_vec(NREP));
+        std::vector<double> mixing_factor_total(NREP, double(0));
+        size_t mixing_factor_total_k_0_max__ = NREP;
+        for (size_t k_0__ = 0; k_0__ < mixing_factor_total_k_0_max__; ++k_0__) {
+            mixing_factor_total[k_0__] = vals_r__[pos__++];
         }
-        size_t scaling_factor_total_raw_i_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-        for (size_t i_0__ = 0; i_0__ < scaling_factor_total_raw_i_0_max__; ++i_0__) {
+        size_t mixing_factor_total_i_0_max__ = NREP;
+        for (size_t i_0__ = 0; i_0__ < mixing_factor_total_i_0_max__; ++i_0__) {
             try {
-                writer__.scalar_lb_unconstrain(0, scaling_factor_total_raw[i_0__]);
+                writer__.scalar_lb_unconstrain(0, mixing_factor_total[i_0__]);
             } catch (const std::exception& e) {
-                stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable scaling_factor_total_raw: ") + e.what()), current_statement_begin__, prog_reader__());
+                stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable mixing_factor_total: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
-        current_statement_begin__ = 19;
+        current_statement_begin__ = 30;
         if (!(context__.contains_r("mixing_factor_sup")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable mixing_factor_sup missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("mixing_factor_sup");
@@ -233,7 +297,7 @@ public:
                 stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable mixing_factor_sup: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
-        current_statement_begin__ = 20;
+        current_statement_begin__ = 31;
         if (!(context__.contains_r("mixing_factor_pellet")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable mixing_factor_pellet missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("mixing_factor_pellet");
@@ -253,7 +317,7 @@ public:
                 stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable mixing_factor_pellet: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
-        current_statement_begin__ = 24;
+        current_statement_begin__ = 35;
         if (!(context__.contains_r("phi")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable phi missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("phi");
@@ -273,44 +337,44 @@ public:
                 stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable phi: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
-        current_statement_begin__ = 27;
-        if (!(context__.contains_r("sup_latent_counts")))
-            stan::lang::rethrow_located(std::runtime_error(std::string("Variable sup_latent_counts missing")), current_statement_begin__, prog_reader__());
-        vals_r__ = context__.vals_r("sup_latent_counts");
+        current_statement_begin__ = 38;
+        if (!(context__.contains_r("tot_latent_counts")))
+            stan::lang::rethrow_located(std::runtime_error(std::string("Variable tot_latent_counts missing")), current_statement_begin__, prog_reader__());
+        vals_r__ = context__.vals_r("tot_latent_counts");
         pos__ = 0U;
-        validate_non_negative_index("sup_latent_counts", "NRNA", NRNA);
-        context__.validate_dims("parameter initialization", "sup_latent_counts", "double", context__.to_vec(NRNA));
-        std::vector<double> sup_latent_counts(NRNA, double(0));
-        size_t sup_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < sup_latent_counts_k_0_max__; ++k_0__) {
-            sup_latent_counts[k_0__] = vals_r__[pos__++];
+        validate_non_negative_index("tot_latent_counts", "NRNA", NRNA);
+        context__.validate_dims("parameter initialization", "tot_latent_counts", "double", context__.to_vec(NRNA));
+        std::vector<double> tot_latent_counts(NRNA, double(0));
+        size_t tot_latent_counts_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < tot_latent_counts_k_0_max__; ++k_0__) {
+            tot_latent_counts[k_0__] = vals_r__[pos__++];
         }
-        size_t sup_latent_counts_i_0_max__ = NRNA;
-        for (size_t i_0__ = 0; i_0__ < sup_latent_counts_i_0_max__; ++i_0__) {
+        size_t tot_latent_counts_i_0_max__ = NRNA;
+        for (size_t i_0__ = 0; i_0__ < tot_latent_counts_i_0_max__; ++i_0__) {
             try {
-                writer__.scalar_lb_unconstrain(0, sup_latent_counts[i_0__]);
+                writer__.scalar_lb_unconstrain(0, tot_latent_counts[i_0__]);
             } catch (const std::exception& e) {
-                stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable sup_latent_counts: ") + e.what()), current_statement_begin__, prog_reader__());
+                stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable tot_latent_counts: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
-        current_statement_begin__ = 28;
-        if (!(context__.contains_r("pel_latent_counts")))
-            stan::lang::rethrow_located(std::runtime_error(std::string("Variable pel_latent_counts missing")), current_statement_begin__, prog_reader__());
-        vals_r__ = context__.vals_r("pel_latent_counts");
+        current_statement_begin__ = 41;
+        if (!(context__.contains_r("lopSup")))
+            stan::lang::rethrow_located(std::runtime_error(std::string("Variable lopSup missing")), current_statement_begin__, prog_reader__());
+        vals_r__ = context__.vals_r("lopSup");
         pos__ = 0U;
-        validate_non_negative_index("pel_latent_counts", "NRNA", NRNA);
-        context__.validate_dims("parameter initialization", "pel_latent_counts", "double", context__.to_vec(NRNA));
-        std::vector<double> pel_latent_counts(NRNA, double(0));
-        size_t pel_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < pel_latent_counts_k_0_max__; ++k_0__) {
-            pel_latent_counts[k_0__] = vals_r__[pos__++];
+        validate_non_negative_index("lopSup", "NRNA", NRNA);
+        context__.validate_dims("parameter initialization", "lopSup", "double", context__.to_vec(NRNA));
+        std::vector<double> lopSup(NRNA, double(0));
+        size_t lopSup_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < lopSup_k_0_max__; ++k_0__) {
+            lopSup[k_0__] = vals_r__[pos__++];
         }
-        size_t pel_latent_counts_i_0_max__ = NRNA;
-        for (size_t i_0__ = 0; i_0__ < pel_latent_counts_i_0_max__; ++i_0__) {
+        size_t lopSup_i_0_max__ = NRNA;
+        for (size_t i_0__ = 0; i_0__ < lopSup_i_0_max__; ++i_0__) {
             try {
-                writer__.scalar_lb_unconstrain(0, pel_latent_counts[i_0__]);
+                writer__.scalar_unconstrain(lopSup[i_0__]);
             } catch (const std::exception& e) {
-                stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable pel_latent_counts: ") + e.what()), current_statement_begin__, prog_reader__());
+                stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable lopSup: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
         params_r__ = writer__.data_r();
@@ -338,17 +402,17 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 18;
-            std::vector<local_scalar_t__> scaling_factor_total_raw;
-            size_t scaling_factor_total_raw_d_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-            scaling_factor_total_raw.reserve(scaling_factor_total_raw_d_0_max__);
-            for (size_t d_0__ = 0; d_0__ < scaling_factor_total_raw_d_0_max__; ++d_0__) {
+            current_statement_begin__ = 29;
+            std::vector<local_scalar_t__> mixing_factor_total;
+            size_t mixing_factor_total_d_0_max__ = NREP;
+            mixing_factor_total.reserve(mixing_factor_total_d_0_max__);
+            for (size_t d_0__ = 0; d_0__ < mixing_factor_total_d_0_max__; ++d_0__) {
                 if (jacobian__)
-                    scaling_factor_total_raw.push_back(in__.scalar_lb_constrain(0, lp__));
+                    mixing_factor_total.push_back(in__.scalar_lb_constrain(0, lp__));
                 else
-                    scaling_factor_total_raw.push_back(in__.scalar_lb_constrain(0));
+                    mixing_factor_total.push_back(in__.scalar_lb_constrain(0));
             }
-            current_statement_begin__ = 19;
+            current_statement_begin__ = 30;
             std::vector<local_scalar_t__> mixing_factor_sup;
             size_t mixing_factor_sup_d_0_max__ = NREP;
             mixing_factor_sup.reserve(mixing_factor_sup_d_0_max__);
@@ -358,7 +422,7 @@ public:
                 else
                     mixing_factor_sup.push_back(in__.scalar_lb_constrain(0));
             }
-            current_statement_begin__ = 20;
+            current_statement_begin__ = 31;
             std::vector<local_scalar_t__> mixing_factor_pellet;
             size_t mixing_factor_pellet_d_0_max__ = NREP;
             mixing_factor_pellet.reserve(mixing_factor_pellet_d_0_max__);
@@ -368,7 +432,7 @@ public:
                 else
                     mixing_factor_pellet.push_back(in__.scalar_lb_constrain(0));
             }
-            current_statement_begin__ = 24;
+            current_statement_begin__ = 35;
             std::vector<local_scalar_t__> phi;
             size_t phi_d_0_max__ = 3;
             phi.reserve(phi_d_0_max__);
@@ -378,86 +442,81 @@ public:
                 else
                     phi.push_back(in__.scalar_lb_constrain(0));
             }
-            current_statement_begin__ = 27;
-            std::vector<local_scalar_t__> sup_latent_counts;
-            size_t sup_latent_counts_d_0_max__ = NRNA;
-            sup_latent_counts.reserve(sup_latent_counts_d_0_max__);
-            for (size_t d_0__ = 0; d_0__ < sup_latent_counts_d_0_max__; ++d_0__) {
+            current_statement_begin__ = 38;
+            std::vector<local_scalar_t__> tot_latent_counts;
+            size_t tot_latent_counts_d_0_max__ = NRNA;
+            tot_latent_counts.reserve(tot_latent_counts_d_0_max__);
+            for (size_t d_0__ = 0; d_0__ < tot_latent_counts_d_0_max__; ++d_0__) {
                 if (jacobian__)
-                    sup_latent_counts.push_back(in__.scalar_lb_constrain(0, lp__));
+                    tot_latent_counts.push_back(in__.scalar_lb_constrain(0, lp__));
                 else
-                    sup_latent_counts.push_back(in__.scalar_lb_constrain(0));
+                    tot_latent_counts.push_back(in__.scalar_lb_constrain(0));
             }
-            current_statement_begin__ = 28;
-            std::vector<local_scalar_t__> pel_latent_counts;
-            size_t pel_latent_counts_d_0_max__ = NRNA;
-            pel_latent_counts.reserve(pel_latent_counts_d_0_max__);
-            for (size_t d_0__ = 0; d_0__ < pel_latent_counts_d_0_max__; ++d_0__) {
+            current_statement_begin__ = 41;
+            std::vector<local_scalar_t__> lopSup;
+            size_t lopSup_d_0_max__ = NRNA;
+            lopSup.reserve(lopSup_d_0_max__);
+            for (size_t d_0__ = 0; d_0__ < lopSup_d_0_max__; ++d_0__) {
                 if (jacobian__)
-                    pel_latent_counts.push_back(in__.scalar_lb_constrain(0, lp__));
+                    lopSup.push_back(in__.scalar_constrain(lp__));
                 else
-                    pel_latent_counts.push_back(in__.scalar_lb_constrain(0));
+                    lopSup.push_back(in__.scalar_constrain());
             }
             // transformed parameters
-            current_statement_begin__ = 32;
-            validate_non_negative_index("scaling_factor_total", "NREP", NREP);
-            std::vector<local_scalar_t__> scaling_factor_total(NREP, local_scalar_t__(0));
-            stan::math::initialize(scaling_factor_total, DUMMY_VAR__);
-            stan::math::fill(scaling_factor_total, DUMMY_VAR__);
+            current_statement_begin__ = 45;
+            validate_non_negative_index("pSup", "NRNA", NRNA);
+            std::vector<local_scalar_t__> pSup(NRNA, local_scalar_t__(0));
+            stan::math::initialize(pSup, DUMMY_VAR__);
+            stan::math::fill(pSup, DUMMY_VAR__);
             // transformed parameters block statements
-            current_statement_begin__ = 33;
-            stan::model::assign(scaling_factor_total, 
-                        stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
-                        1, 
-                        "assigning variable scaling_factor_total");
-            current_statement_begin__ = 34;
-            if (as_bool(logical_gt(NREP, 1))) {
-                current_statement_begin__ = 35;
-                for (int rep = 2; rep <= NREP; ++rep) {
-                    current_statement_begin__ = 36;
-                    stan::model::assign(scaling_factor_total, 
-                                stan::model::cons_list(stan::model::index_uni(rep), stan::model::nil_index_list()), 
-                                get_base1(scaling_factor_total_raw, (rep - 1), "scaling_factor_total_raw", 1), 
-                                "assigning variable scaling_factor_total");
-                }
+            current_statement_begin__ = 48;
+            for (int i = 1; i <= NRNA; ++i) {
+                current_statement_begin__ = 49;
+                stan::model::assign(pSup, 
+                            stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
+                            inv_logit(get_base1(lopSup, i, "lopSup", 1)), 
+                            "assigning variable pSup");
             }
             // validate transformed parameters
             const char* function__ = "validate transformed params";
             (void) function__;  // dummy to suppress unused var warning
-            current_statement_begin__ = 32;
-            size_t scaling_factor_total_k_0_max__ = NREP;
-            for (size_t k_0__ = 0; k_0__ < scaling_factor_total_k_0_max__; ++k_0__) {
-                if (stan::math::is_uninitialized(scaling_factor_total[k_0__])) {
+            current_statement_begin__ = 45;
+            size_t pSup_k_0_max__ = NRNA;
+            for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
+                if (stan::math::is_uninitialized(pSup[k_0__])) {
                     std::stringstream msg__;
-                    msg__ << "Undefined transformed parameter: scaling_factor_total" << "[" << k_0__ << "]";
-                    stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable scaling_factor_total: ") + msg__.str()), current_statement_begin__, prog_reader__());
+                    msg__ << "Undefined transformed parameter: pSup" << "[" << k_0__ << "]";
+                    stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable pSup: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
             // model body
-            current_statement_begin__ = 43;
+            current_statement_begin__ = 55;
             lp_accum__.add(cauchy_log<propto__>(phi, 0, 3));
-            current_statement_begin__ = 46;
-            if (as_bool(logical_gt(NREP, 1))) {
-                current_statement_begin__ = 47;
-                for (int rep = 2; rep <= NREP; ++rep) {
-                    current_statement_begin__ = 48;
-                    lp_accum__.add(gamma_log<propto__>(get_base1(scaling_factor_total, rep, "scaling_factor_total", 1), 1, 1));
-                }
+            current_statement_begin__ = 58;
+            lp_accum__.add(normal_log<propto__>(lopSup, 0, 3));
+            current_statement_begin__ = 61;
+            for (int i = 1; i <= NRNA; ++i) {
+                current_statement_begin__ = 62;
+                lp_accum__.add(normal_log<propto__>(stan::math::log(get_base1(tot_latent_counts, i, "tot_latent_counts", 1)), get_base1(mean_log_tot_obs, i, "mean_log_tot_obs", 1), get_base1(sd_log_tot_obs, i, "sd_log_tot_obs", 1)));
+                current_statement_begin__ = 63;
+                lp_accum__.add(-(stan::math::log(get_base1(tot_latent_counts, i, "tot_latent_counts", 1))));
             }
-            current_statement_begin__ = 51;
-            lp_accum__.add(gamma_log<propto__>(mixing_factor_sup, 1, 1));
-            current_statement_begin__ = 52;
-            lp_accum__.add(gamma_log<propto__>(mixing_factor_pellet, 1, 1));
-            current_statement_begin__ = 53;
+            current_statement_begin__ = 65;
+            lp_accum__.add(normal_log<propto__>(mixing_factor_total, mixing_factor_total_guess_mean, mixing_factor_total_guess_sd));
+            current_statement_begin__ = 66;
+            lp_accum__.add(normal_log<propto__>(mixing_factor_sup, mixing_factor_sup_guess_mean, mixing_factor_sup_guess_sd));
+            current_statement_begin__ = 67;
+            lp_accum__.add(normal_log<propto__>(mixing_factor_pellet, mixing_factor_pellet_guess_mean, mixing_factor_pellet_guess_sd));
+            current_statement_begin__ = 69;
             for (int rep = 1; rep <= NREP; ++rep) {
-                current_statement_begin__ = 54;
+                current_statement_begin__ = 70;
                 for (int i = 1; i <= NRNA; ++i) {
-                    current_statement_begin__ = 55;
-                    lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(get_base1(sup_obs_counts, i, "sup_obs_counts", 1), rep, "sup_obs_counts", 2), ((get_base1(sup_latent_counts, i, "sup_latent_counts", 1) * get_base1(mixing_factor_sup, rep, "mixing_factor_sup", 1)) * get_base1(scaling_factor_total, rep, "scaling_factor_total", 1)), get_base1(phi, 1, "phi", 1)));
-                    current_statement_begin__ = 56;
-                    lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(get_base1(pel_obs_counts, i, "pel_obs_counts", 1), rep, "pel_obs_counts", 2), ((get_base1(pel_latent_counts, i, "pel_latent_counts", 1) * get_base1(mixing_factor_pellet, rep, "mixing_factor_pellet", 1)) * get_base1(scaling_factor_total, rep, "scaling_factor_total", 1)), get_base1(phi, 2, "phi", 1)));
-                    current_statement_begin__ = 57;
-                    lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(get_base1(tot_obs_counts, i, "tot_obs_counts", 1), rep, "tot_obs_counts", 2), (get_base1(scaling_factor_total, rep, "scaling_factor_total", 1) * (get_base1(sup_latent_counts, i, "sup_latent_counts", 1) + get_base1(pel_latent_counts, i, "pel_latent_counts", 1))), get_base1(phi, 3, "phi", 1)));
+                    current_statement_begin__ = 71;
+                    lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(get_base1(sup_obs_counts, i, "sup_obs_counts", 1), rep, "sup_obs_counts", 2), ((get_base1(tot_latent_counts, i, "tot_latent_counts", 1) * get_base1(pSup, i, "pSup", 1)) * get_base1(mixing_factor_sup, rep, "mixing_factor_sup", 1)), get_base1(phi, 1, "phi", 1)));
+                    current_statement_begin__ = 72;
+                    lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(get_base1(pel_obs_counts, i, "pel_obs_counts", 1), rep, "pel_obs_counts", 2), ((get_base1(tot_latent_counts, i, "tot_latent_counts", 1) * (1 - get_base1(pSup, i, "pSup", 1))) * get_base1(mixing_factor_pellet, rep, "mixing_factor_pellet", 1)), get_base1(phi, 2, "phi", 1)));
+                    current_statement_begin__ = 73;
+                    lp_accum__.add(neg_binomial_2_log<propto__>(get_base1(get_base1(tot_obs_counts, i, "tot_obs_counts", 1), rep, "tot_obs_counts", 2), (get_base1(mixing_factor_total, rep, "mixing_factor_total", 1) * get_base1(tot_latent_counts, i, "tot_latent_counts", 1)), get_base1(phi, 3, "phi", 1)));
                 }
             }
         } catch (const std::exception& e) {
@@ -480,20 +539,19 @@ public:
     }
     void get_param_names(std::vector<std::string>& names__) const {
         names__.resize(0);
-        names__.push_back("scaling_factor_total_raw");
+        names__.push_back("mixing_factor_total");
         names__.push_back("mixing_factor_sup");
         names__.push_back("mixing_factor_pellet");
         names__.push_back("phi");
-        names__.push_back("sup_latent_counts");
-        names__.push_back("pel_latent_counts");
-        names__.push_back("scaling_factor_total");
+        names__.push_back("tot_latent_counts");
+        names__.push_back("lopSup");
         names__.push_back("pSup");
     }
     void get_dims(std::vector<std::vector<size_t> >& dimss__) const {
         dimss__.resize(0);
         std::vector<size_t> dims__;
         dims__.resize(0);
-        dims__.push_back((logical_gt(NREP, 1) ? (NREP - 1) : 0 ));
+        dims__.push_back(NREP);
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(NREP);
@@ -509,9 +567,6 @@ public:
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(NRNA);
-        dimss__.push_back(dims__);
-        dims__.resize(0);
-        dims__.push_back(NREP);
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(NRNA);
@@ -531,15 +586,15 @@ public:
         static const char* function__ = "model_SedSeqQuantReps_namespace::write_array";
         (void) function__;  // dummy to suppress unused var warning
         // read-transform, write parameters
-        std::vector<double> scaling_factor_total_raw;
-        size_t scaling_factor_total_raw_d_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-        scaling_factor_total_raw.reserve(scaling_factor_total_raw_d_0_max__);
-        for (size_t d_0__ = 0; d_0__ < scaling_factor_total_raw_d_0_max__; ++d_0__) {
-            scaling_factor_total_raw.push_back(in__.scalar_lb_constrain(0));
+        std::vector<double> mixing_factor_total;
+        size_t mixing_factor_total_d_0_max__ = NREP;
+        mixing_factor_total.reserve(mixing_factor_total_d_0_max__);
+        for (size_t d_0__ = 0; d_0__ < mixing_factor_total_d_0_max__; ++d_0__) {
+            mixing_factor_total.push_back(in__.scalar_lb_constrain(0));
         }
-        size_t scaling_factor_total_raw_k_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-        for (size_t k_0__ = 0; k_0__ < scaling_factor_total_raw_k_0_max__; ++k_0__) {
-            vars__.push_back(scaling_factor_total_raw[k_0__]);
+        size_t mixing_factor_total_k_0_max__ = NREP;
+        for (size_t k_0__ = 0; k_0__ < mixing_factor_total_k_0_max__; ++k_0__) {
+            vars__.push_back(mixing_factor_total[k_0__]);
         }
         std::vector<double> mixing_factor_sup;
         size_t mixing_factor_sup_d_0_max__ = NREP;
@@ -571,25 +626,25 @@ public:
         for (size_t k_0__ = 0; k_0__ < phi_k_0_max__; ++k_0__) {
             vars__.push_back(phi[k_0__]);
         }
-        std::vector<double> sup_latent_counts;
-        size_t sup_latent_counts_d_0_max__ = NRNA;
-        sup_latent_counts.reserve(sup_latent_counts_d_0_max__);
-        for (size_t d_0__ = 0; d_0__ < sup_latent_counts_d_0_max__; ++d_0__) {
-            sup_latent_counts.push_back(in__.scalar_lb_constrain(0));
+        std::vector<double> tot_latent_counts;
+        size_t tot_latent_counts_d_0_max__ = NRNA;
+        tot_latent_counts.reserve(tot_latent_counts_d_0_max__);
+        for (size_t d_0__ = 0; d_0__ < tot_latent_counts_d_0_max__; ++d_0__) {
+            tot_latent_counts.push_back(in__.scalar_lb_constrain(0));
         }
-        size_t sup_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < sup_latent_counts_k_0_max__; ++k_0__) {
-            vars__.push_back(sup_latent_counts[k_0__]);
+        size_t tot_latent_counts_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < tot_latent_counts_k_0_max__; ++k_0__) {
+            vars__.push_back(tot_latent_counts[k_0__]);
         }
-        std::vector<double> pel_latent_counts;
-        size_t pel_latent_counts_d_0_max__ = NRNA;
-        pel_latent_counts.reserve(pel_latent_counts_d_0_max__);
-        for (size_t d_0__ = 0; d_0__ < pel_latent_counts_d_0_max__; ++d_0__) {
-            pel_latent_counts.push_back(in__.scalar_lb_constrain(0));
+        std::vector<double> lopSup;
+        size_t lopSup_d_0_max__ = NRNA;
+        lopSup.reserve(lopSup_d_0_max__);
+        for (size_t d_0__ = 0; d_0__ < lopSup_d_0_max__; ++d_0__) {
+            lopSup.push_back(in__.scalar_constrain());
         }
-        size_t pel_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < pel_latent_counts_k_0_max__; ++k_0__) {
-            vars__.push_back(pel_latent_counts[k_0__]);
+        size_t lopSup_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < lopSup_k_0_max__; ++k_0__) {
+            vars__.push_back(lopSup[k_0__]);
         }
         double lp__ = 0.0;
         (void) lp__;  // dummy to suppress unused var warning
@@ -599,27 +654,19 @@ public:
         if (!include_tparams__ && !include_gqs__) return;
         try {
             // declare and define transformed parameters
-            current_statement_begin__ = 32;
-            validate_non_negative_index("scaling_factor_total", "NREP", NREP);
-            std::vector<double> scaling_factor_total(NREP, double(0));
-            stan::math::initialize(scaling_factor_total, DUMMY_VAR__);
-            stan::math::fill(scaling_factor_total, DUMMY_VAR__);
+            current_statement_begin__ = 45;
+            validate_non_negative_index("pSup", "NRNA", NRNA);
+            std::vector<double> pSup(NRNA, double(0));
+            stan::math::initialize(pSup, DUMMY_VAR__);
+            stan::math::fill(pSup, DUMMY_VAR__);
             // do transformed parameters statements
-            current_statement_begin__ = 33;
-            stan::model::assign(scaling_factor_total, 
-                        stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
-                        1, 
-                        "assigning variable scaling_factor_total");
-            current_statement_begin__ = 34;
-            if (as_bool(logical_gt(NREP, 1))) {
-                current_statement_begin__ = 35;
-                for (int rep = 2; rep <= NREP; ++rep) {
-                    current_statement_begin__ = 36;
-                    stan::model::assign(scaling_factor_total, 
-                                stan::model::cons_list(stan::model::index_uni(rep), stan::model::nil_index_list()), 
-                                get_base1(scaling_factor_total_raw, (rep - 1), "scaling_factor_total_raw", 1), 
-                                "assigning variable scaling_factor_total");
-                }
+            current_statement_begin__ = 48;
+            for (int i = 1; i <= NRNA; ++i) {
+                current_statement_begin__ = 49;
+                stan::model::assign(pSup, 
+                            stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
+                            inv_logit(get_base1(lopSup, i, "lopSup", 1)), 
+                            "assigning variable pSup");
             }
             if (!include_gqs__ && !include_tparams__) return;
             // validate transformed parameters
@@ -627,33 +674,12 @@ public:
             (void) function__;  // dummy to suppress unused var warning
             // write transformed parameters
             if (include_tparams__) {
-                size_t scaling_factor_total_k_0_max__ = NREP;
-                for (size_t k_0__ = 0; k_0__ < scaling_factor_total_k_0_max__; ++k_0__) {
-                    vars__.push_back(scaling_factor_total[k_0__]);
+                size_t pSup_k_0_max__ = NRNA;
+                for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
+                    vars__.push_back(pSup[k_0__]);
                 }
             }
             if (!include_gqs__) return;
-            // declare and define generated quantities
-            current_statement_begin__ = 63;
-            validate_non_negative_index("pSup", "NRNA", NRNA);
-            std::vector<double> pSup(NRNA, double(0));
-            stan::math::initialize(pSup, DUMMY_VAR__);
-            stan::math::fill(pSup, DUMMY_VAR__);
-            // generated quantities statements
-            current_statement_begin__ = 65;
-            for (int i = 1; i <= NRNA; ++i) {
-                current_statement_begin__ = 66;
-                stan::model::assign(pSup, 
-                            stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
-                            (get_base1(sup_latent_counts, i, "sup_latent_counts", 1) / (get_base1(sup_latent_counts, i, "sup_latent_counts", 1) + get_base1(pel_latent_counts, i, "pel_latent_counts", 1))), 
-                            "assigning variable pSup");
-            }
-            // validate, write generated quantities
-            current_statement_begin__ = 63;
-            size_t pSup_k_0_max__ = NRNA;
-            for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
-                vars__.push_back(pSup[k_0__]);
-            }
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
             // Next line prevents compiler griping about no return
@@ -684,10 +710,10 @@ public:
                                  bool include_tparams__ = true,
                                  bool include_gqs__ = true) const {
         std::stringstream param_name_stream__;
-        size_t scaling_factor_total_raw_k_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-        for (size_t k_0__ = 0; k_0__ < scaling_factor_total_raw_k_0_max__; ++k_0__) {
+        size_t mixing_factor_total_k_0_max__ = NREP;
+        for (size_t k_0__ = 0; k_0__ < mixing_factor_total_k_0_max__; ++k_0__) {
             param_name_stream__.str(std::string());
-            param_name_stream__ << "scaling_factor_total_raw" << '.' << k_0__ + 1;
+            param_name_stream__ << "mixing_factor_total" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
         size_t mixing_factor_sup_k_0_max__ = NREP;
@@ -708,43 +734,37 @@ public:
             param_name_stream__ << "phi" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
-        size_t sup_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < sup_latent_counts_k_0_max__; ++k_0__) {
+        size_t tot_latent_counts_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < tot_latent_counts_k_0_max__; ++k_0__) {
             param_name_stream__.str(std::string());
-            param_name_stream__ << "sup_latent_counts" << '.' << k_0__ + 1;
+            param_name_stream__ << "tot_latent_counts" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
-        size_t pel_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < pel_latent_counts_k_0_max__; ++k_0__) {
+        size_t lopSup_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < lopSup_k_0_max__; ++k_0__) {
             param_name_stream__.str(std::string());
-            param_name_stream__ << "pel_latent_counts" << '.' << k_0__ + 1;
+            param_name_stream__ << "lopSup" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
         if (!include_gqs__ && !include_tparams__) return;
         if (include_tparams__) {
-            size_t scaling_factor_total_k_0_max__ = NREP;
-            for (size_t k_0__ = 0; k_0__ < scaling_factor_total_k_0_max__; ++k_0__) {
+            size_t pSup_k_0_max__ = NRNA;
+            for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
                 param_name_stream__.str(std::string());
-                param_name_stream__ << "scaling_factor_total" << '.' << k_0__ + 1;
+                param_name_stream__ << "pSup" << '.' << k_0__ + 1;
                 param_names__.push_back(param_name_stream__.str());
             }
         }
         if (!include_gqs__) return;
-        size_t pSup_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
-            param_name_stream__.str(std::string());
-            param_name_stream__ << "pSup" << '.' << k_0__ + 1;
-            param_names__.push_back(param_name_stream__.str());
-        }
     }
     void unconstrained_param_names(std::vector<std::string>& param_names__,
                                    bool include_tparams__ = true,
                                    bool include_gqs__ = true) const {
         std::stringstream param_name_stream__;
-        size_t scaling_factor_total_raw_k_0_max__ = (logical_gt(NREP, 1) ? (NREP - 1) : 0 );
-        for (size_t k_0__ = 0; k_0__ < scaling_factor_total_raw_k_0_max__; ++k_0__) {
+        size_t mixing_factor_total_k_0_max__ = NREP;
+        for (size_t k_0__ = 0; k_0__ < mixing_factor_total_k_0_max__; ++k_0__) {
             param_name_stream__.str(std::string());
-            param_name_stream__ << "scaling_factor_total_raw" << '.' << k_0__ + 1;
+            param_name_stream__ << "mixing_factor_total" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
         size_t mixing_factor_sup_k_0_max__ = NREP;
@@ -765,34 +785,28 @@ public:
             param_name_stream__ << "phi" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
-        size_t sup_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < sup_latent_counts_k_0_max__; ++k_0__) {
+        size_t tot_latent_counts_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < tot_latent_counts_k_0_max__; ++k_0__) {
             param_name_stream__.str(std::string());
-            param_name_stream__ << "sup_latent_counts" << '.' << k_0__ + 1;
+            param_name_stream__ << "tot_latent_counts" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
-        size_t pel_latent_counts_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < pel_latent_counts_k_0_max__; ++k_0__) {
+        size_t lopSup_k_0_max__ = NRNA;
+        for (size_t k_0__ = 0; k_0__ < lopSup_k_0_max__; ++k_0__) {
             param_name_stream__.str(std::string());
-            param_name_stream__ << "pel_latent_counts" << '.' << k_0__ + 1;
+            param_name_stream__ << "lopSup" << '.' << k_0__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
         if (!include_gqs__ && !include_tparams__) return;
         if (include_tparams__) {
-            size_t scaling_factor_total_k_0_max__ = NREP;
-            for (size_t k_0__ = 0; k_0__ < scaling_factor_total_k_0_max__; ++k_0__) {
+            size_t pSup_k_0_max__ = NRNA;
+            for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
                 param_name_stream__.str(std::string());
-                param_name_stream__ << "scaling_factor_total" << '.' << k_0__ + 1;
+                param_name_stream__ << "pSup" << '.' << k_0__ + 1;
                 param_names__.push_back(param_name_stream__.str());
             }
         }
         if (!include_gqs__) return;
-        size_t pSup_k_0_max__ = NRNA;
-        for (size_t k_0__ = 0; k_0__ < pSup_k_0_max__; ++k_0__) {
-            param_name_stream__.str(std::string());
-            param_name_stream__ << "pSup" << '.' << k_0__ + 1;
-            param_names__.push_back(param_name_stream__.str());
-        }
     }
 }; // model
 }  // namespace
