@@ -38,8 +38,8 @@ We recommand you to use package "devtools" for dowloading this package from GitH
 
 ```         
 install.packages("devtools")
-library(devtools)
-install_github("jabard89/SedSeqQuant")
+
+devtools::install_github("jabard89/SedSeqQuant")
 ```
 
 Then load SedSeqQuant as a standard package:
