@@ -8,7 +8,7 @@ Authors@R: c(
     person(given = "Xuejia", family = "Ke", email = "s1924580@ed.ac.uk", role = c("aut")),
     person(given = "Jared", family = "Bard", email = "jbard@uchicago.edu", role = c("aut"), comment = c(ORCID = "0000-0001-8357-9721"))
     )
-License: Apache License (>= 2)
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
@@ -35,3 +35,4 @@ LinkingTo:
     rstan (>= 2.18.1),
     StanHeaders (>= 2.18.0)
 SystemRequirements: GNU make
+LazyData: true

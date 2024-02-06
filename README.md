@@ -14,8 +14,9 @@ This package employs a bayesian statistical model to quantify the distribution o
 
 Users need to provide a count matrix and a samplesheet file. Those files need to meet the conditions below:
 
-[**1.**]{style="color:red;"} **Both the count matrix and samplesheet file need to be in the ".tsv" format**\
-[**2.**]{style="color:red;"} **The count matrix should have a column of transcript_IDs then a column of counts for every Sample_ID. It is highly recommended to first filter this for verified ORFs. Counts can be integers or fraction estimates (e.g. est_counts from kallisto).**
+**1. Both the count matrix and samplesheet file need to be in the ".tsv" format**
+
+**2. The count matrix should have a column of transcript_IDs then a column of counts for every Sample_ID. It is highly recommended to first filter this for verified ORFs. Counts can be integers or fraction estimates (e.g. est_counts from kallisto).**
 
 | transcript_ID | F01~snake_230331 | F02~snake_230331 |
 |---------------|------------------|------------------|
@@ -23,18 +24,19 @@ Users need to provide a count matrix and a samplesheet file. Those files need to
 | YAL067C       | 17               | 15               |
 | YAL064W       | 16               | 24               |
 
-[**3.**]{style="color:red;"} **In samplesheet file, there should be at least four columns "Sample_ID","Condition","Rep",and "Fraction". Every Sample_ID must be unique. For every Condition and Rep, there should be a Sample_ID corresponding to the three fractions: Total, Supernatant, and Pellet **\
+**3. In samplesheet file, there should be at least four columns "Sample_ID","Condition","Rep",and "Fraction". Every Sample_ID must be unique. For every Condition and Rep, there should be a Sample_ID corresponding to the three fractions: Total, Supernatant, and Pellet **
+
 
 | Sample_ID       | Condition                      | Rep    | Fraction |
 |-----------------|--------------------------------|--------|----------|
 | F01~snake_230331| hairpinReporters~30C~NA~none   | yHG010 | Total    |
 | F02~snake_230331| hairpinReporters~30C~NA~none   | yHG005 | Total    |
 
-[**4.**]{style="color:red;"} **For every line of comment, there should be a tag "\#" at the begining of the text**
+**4. For every line of comment, there should be a tag "\#" at the begining of the text**
 
 # Installation
 
-We recommand you to use package "devtools" for dowloading this package from GitHub. Please refer [devtools installation instructions](https://www.r-project.org/nosvn/pandoc/devtools.html) for more information.
+We recommend you to use package "devtools" for dowloading this package from GitHub. Please refer [devtools installation instructions](https://www.r-project.org/nosvn/pandoc/devtools.html) for more information.
 
 ```         
 install.packages("devtools")

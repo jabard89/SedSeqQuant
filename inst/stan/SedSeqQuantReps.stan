@@ -60,7 +60,6 @@ model{
   // Priors for tot_latent_counts and mixing_factor_total
   for (i in 1:NRNA) {
     log(tot_latent_counts[i]) ~ normal(mean_log_tot_obs[i], sd_log_tot_obs[i]);
-    target += -log(tot_latent_counts[i]);
   }
   mixing_factor_total ~ normal(mixing_factor_total_guess_mean,mixing_factor_total_guess_sd);
   mixing_factor_sup ~ normal(mixing_factor_sup_guess_mean,mixing_factor_sup_guess_sd);
